@@ -1,0 +1,44 @@
+version: '3.7'
+
+networks:
+  frontend:
+    external: true
+    name: ksys_front_net
+
+configs:
+  traefik_toml:
+    file: ./traefik.toml
+
+secrets:
+  traefik_cert:
+    file: ./tls/cert.pem
+  traefik_key:
+    file: ./tls/key.pem
+
+services:
+  app:
+     image: traefik:1.7.9
+     volumes:
+       - /var/run/docker.sock:/var/run/docker.sock
+     ports:
+       - 80:80
+       - 443:443
+       - 8000:8080
+     networks:
+        - frontend
+     configs:
+       - source: traefik_toml
+         target: /etc/traefik/traefik.toml
+         mode: 444
+     secrets:
+       - source: traefik_cert
+         target: cert.pem
+         uid: "0"
+         mode: 400
+       - source: traefik_key
+         target: key.pem
+         uid: "0"
+         mode: 400
+     deploy:
+        placement:
+          constraints: [node.role==manager]

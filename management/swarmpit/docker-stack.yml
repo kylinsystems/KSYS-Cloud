@@ -1,0 +1,69 @@
+version: '3.7'
+
+networks:
+  frontend:
+    external: true
+    name: ksys_front_net
+  local_net:
+    driver: overlay
+    attachable: true
+
+volumes:
+  db_data:
+    external: true
+    name : ksys_swarmpit_db_data
+
+services:
+  app:
+    image: swarmpit/swarmpit:1.6
+    environment:
+      - SWARMPIT_DB=http://db:5984
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    ports:
+      - 8101:8080
+    networks:
+      - frontend
+      - local_net
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+      labels:
+        - "traefik.backend=swarmpit"
+        - "traefik.frontend.rule=PathPrefixStrip:/swarmpit"
+        - "traefik.port=8080"
+        - "traefik.enable=true"
+        - "traefik.docker.network=ksys_front_net"
+        - "traefik.weight=10"
+        - "traefik.backend.loadbalancer.swarm=true"
+        - "traefik.backend.loadbalancer.method=drr"
+
+  db:
+    image: couchdb:2.3.0
+    volumes:
+      - db_data:/opt/couchdb/data
+    networks:
+      - local_net
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+
+  agent:
+    image: swarmpit/agent:2.0
+    environment:
+      - DOCKER_API_VERSION=1.35
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - local_net
+    deploy:
+      mode: global
+      resources:
+        limits:
+          cpus: '0.10'
+          memory: 64M
+        reservations:
+          cpus: '0.05'
+          memory: 32M
