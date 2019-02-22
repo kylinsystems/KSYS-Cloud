@@ -52,14 +52,14 @@ docker swarm init
 
 
 ## 3. Reference
-https://github.com/stefanprodan/swarmprom
-https://github.com/deviantony/docker-elk
-https://github.com/uschtwill/docker_monitoring_logging_alerting
-https://github.com/imixs/imixs-cloud
-https://github.com/vegasbrianc/prometheus
-https://github.com/wrouesnel/postgres_exporter
-https://dzone.com/articles/swarmprom-prometheus-monitoring-for-docker-swarm
-https://www.akamenskiy.com/docker-swarm-ha-setup-production/
+* https://github.com/stefanprodan/swarmprom
+* https://github.com/deviantony/docker-elk
+* https://github.com/uschtwill/docker_monitoring_logging_alerting
+* https://github.com/imixs/imixs-cloud
+* https://github.com/vegasbrianc/prometheus
+* https://github.com/wrouesnel/postgres_exporter
+* https://dzone.com/articles/swarmprom-prometheus-monitoring-for-docker-swarm
+* https://www.akamenskiy.com/docker-swarm-ha-setup-production/
 
 ### Grafana Dashboard
 * Server Overview
