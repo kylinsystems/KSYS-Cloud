@@ -11,9 +11,9 @@ configs:
 
 secrets:
   traefik_cert:
-    file: ./tls/cert.pem
+    file: ../../ssl-tls-certs/cert.pem
   traefik_key:
-    file: ./tls/key.pem
+    file: ../../ssl-tls-certs/key.pem
 
 services:
   app:

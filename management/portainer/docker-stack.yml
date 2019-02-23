@@ -4,7 +4,7 @@ networks:
   frontend:
     external: true
     name: ksys_front_net
-  local_net:
+  backend:
     driver: overlay
     attachable: true
 
@@ -26,7 +26,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - /var/lib/docker/volumes:/var/lib/docker/volumes
     networks:
-      - local_net
+      - backend
     deploy:
       mode: global
       placement:
@@ -39,7 +39,7 @@ services:
       - "8102:9000"
     networks:
       - frontend
-      - local_net
+      - backend
     volumes:
       - portainer_data:/data
     deploy:

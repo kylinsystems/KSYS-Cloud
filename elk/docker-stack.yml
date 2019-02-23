@@ -55,7 +55,7 @@ services:
     deploy:
       labels:
         - "traefik.backend=kibana"
-        - "traefik.frontend.rule=PathPrefixStrip:/kibana"
+        - "traefik.frontend.rule=PathPrefix:/kibana"
         - "traefik.port=5601"
         - "traefik.enable=true"
         - "traefik.docker.network=ksys_front_net"

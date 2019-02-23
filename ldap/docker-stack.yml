@@ -1,0 +1,92 @@
+version: '3.7'
+
+networks:
+  frontend:
+    external: true
+    name: ksys_front_net
+  backend:  
+    driver: overlay
+    attachable: true
+
+configs:
+  openldap_env_startup_config:
+    file: ./osixia-openldap/environment/my-env.startup.yaml
+  openldap_env_config:
+    file: ./osixia-openldap/environment/my-env.yaml
+
+
+services:
+  openldap:
+    image: osixia/openldap:1.2.3
+    environment:
+      LDAP_LOG_LEVEL: "3"
+      LDAP_ORGANISATION: "Example Inc."
+      LDAP_DOMAIN: "ldap.example.org"
+      # LDAP_BASE_DN: ""
+      LDAP_ADMIN_PASSWORD: "admin"
+      LDAP_CONFIG_PASSWORD: "config"
+      LDAP_READONLY_USER: "false"
+      # LDAP_READONLY_USER_USERNAME: "readonly"
+      # LDAP_READONLY_USER_PASSWORD: "readonly"
+      KEEP_EXISTING_CONFIG: "false"
+      LDAP_REMOVE_CONFIG_AFTER_SETUP: "true"
+      LDAP_TLS: "false"
+    tty: true
+    stdin_open: true
+    # volumes:
+      # - ./osixia-openldap/bootstrap:/container/service/slapd/assets/config/bootstrap # folder cant be empty!!!
+      # - ./osixia-openldap/certs:/container/service/slapd/assets/certs # Setup as Secrets???
+      # - ./osixia-openldap/environment:/container/environment/01-custom # be careful, it will be removed after setup!!!
+    configs:
+      - source: openldap_env_startup_config
+        target: /container/environment/01-custom/my-env.startup.yaml
+      - source: openldap_env_config
+        target: /container/environment/01-custom/my-env.yaml
+    ports:
+      - "389:389"
+      - "636:636"
+    hostname: "ldap.example.org"
+    networks:
+      - backend
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+
+  phpldapadmin:
+    image: osixia/phpldapadmin:0.7.2
+    environment:
+      PHPLDAPADMIN_LDAP_HOSTS: "openldap"
+      PHPLDAPADMIN_HTTPS: "false"
+    ports:
+      - "8401:80"
+    networks:
+      - frontend
+      - backend
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+
+  lam:
+    image: kylinsystems/ksys-lam
+    volumes:
+      - ./lam/config:/etc/ldap-account-manager
+      # - ./lam/data:/var/lib/ldap-account-manager
+    ports:
+      - "8402:80"
+    depends_on:
+      - openldap
+    networks:
+      - frontend
+      - backend
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager

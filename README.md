@@ -2,9 +2,11 @@
 KSYS Cloud Infrastructure by Docker Swarm
 - Proxy : traefik
 - Management : portainer, swarmpit, registry
+- LDAP : openldap, phpldapadmin, ldapaccountmanager
 - Logging : graylog
 - Monitoring : prometheus, grafana
-- ELK : 
+- ELK : Elasticsearch, logstash, Kibana
+
 
 ## 1.1 Create a Swarm Cluster (Windows 10/Hyper-V)
 https://docs.docker.com/get-started/part4/#create-a-cluster
@@ -47,8 +49,14 @@ docker swarm init
 * Alertmanager () : 
   * [http://localhost:8203](http://localhost:8203)
 
-* Grafana () : 
+* Kibana () : 
   * [http://localhost:8301](http://localhost:8301)
+
+* Phpldapadmin (cn=admin,dc=ldap,dc=example,dc=org/admin) :
+  * [http://localhost:8401](http://localhost:8401)
+
+* LdapAccountManager (admin/admin | master password : lam) :
+  * [http://localhost:8402](http://localhost:8402)
 
 
 ## 3. Reference
@@ -58,6 +66,8 @@ docker swarm init
 * https://github.com/imixs/imixs-cloud
 * https://github.com/vegasbrianc/prometheus
 * https://github.com/wrouesnel/postgres_exporter
+* https://github.com/osixia/docker-openldap
+* https://github.com/osixia/docker-phpLDAPadmin
 * https://dzone.com/articles/swarmprom-prometheus-monitoring-for-docker-swarm
 * https://www.akamenskiy.com/docker-swarm-ha-setup-production/
 
@@ -71,3 +81,14 @@ https://grafana.com/dashboards/1860
 * postgres-exporter
 https://grafana.com/dashboards/455
 
+### OpenLDAP 
+Using below ldapsearch script within openldap container to test LDAP user, replace [CONTAIENR ID] with real ID. 
+
+Or you may connect to contaienr console in Portainer, then ldapsearch in console directly.
+
+```
+docker exec [CONTAINER ID] ldapsearch -x -H ldap://localhost -b dc=ldap,dc=example,dc=org -D "cn=admin,dc=ldap,dc=example,dc=org" -w admin
+```
+
+### LDAP Account Manager
+Change [LAM Configuration] -> [Edit Server Profiles]

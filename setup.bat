@@ -17,7 +17,7 @@ REM ######################################################
 docker network create -d overlay --attachable ksys_front_net
 
 REM ######################################################
-REM Pulling images...
+REM Build & Pulling images...
 REM ######################################################
 REM docker-compose -f proxy/traefik/docker-stack.yml pull app
 REM docker-compose -f management/swarmpit/docker-stack.yml pull app db agent
@@ -25,6 +25,9 @@ REM docker-compose -f management/portainer/docker-stack.yml pull portainer agent
 REM docker-compose -f monitoring/docker-stack.yml pull prometheus alertmanager node-exporter cadvisor grafana 
 REM docker-compose -f logging/docker-stack.yml pull curator elastalert elasticsearch kibana logstash master-filebeat
 REM docker-compose -f elk/docker-stack.yml pull elasticsearch logstash kibana
+REM cd ldap/lam 
+REM docker build -t kylinsystems/ksys-lam .
+REM docker-compose -f ldap/docker-stack.yml pull openldap phpldapadmin lam
 
 REM ######################################################
 REM Starting stack
@@ -32,8 +35,11 @@ REM ######################################################
 docker stack deploy -c proxy/traefik/docker-stack.yml ksys-traefik
 REM docker stack deploy -c management/swarmpit/docker-stack.yml ksys-swarmpit
 docker stack deploy -c management/portainer/docker-stack.yml ksys-portainer
-docker stack deploy -c monitoring/docker-stack.yml ksys-monitoring
+docker stack deploy -c ldap/docker-stack.yml ksys-ldap
 REM docker stack deploy -c logging/docker-stack.yml ksys-logging
+REM docker stack deploy -c monitoring/docker-stack.yml ksys-monitoring
+REM docker stack deploy -c elk/docker-stack.yml ksys-elk
+
 
 REM ######################################################
 REM List all

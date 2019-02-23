@@ -6,8 +6,10 @@ REM ......................................................
 REM ######################################################
 REM Stopping and removing stacks...
 REM ######################################################
-REM docker stack rm ksys-logging
+docker stack rm ksys-elk
 docker stack rm ksys-monitoring
+REM docker stack rm ksys-logging
+docker stack rm ksys-ldap
 docker stack rm ksys-portainer
 docker stack rm ksys-swarmpit
 docker stack rm ksys-traefik
