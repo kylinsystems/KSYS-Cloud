@@ -35,7 +35,7 @@ REM ######################################################
 docker stack deploy -c proxy/traefik/docker-stack.yml ksys-traefik
 REM docker stack deploy -c management/swarmpit/docker-stack.yml ksys-swarmpit
 docker stack deploy -c management/portainer/docker-stack.yml ksys-portainer
-docker stack deploy -c ldap/docker-stack.yml ksys-ldap
+REM docker stack deploy -c ldap/docker-stack.yml ksys-ldap
 REM docker stack deploy -c logging/docker-stack.yml ksys-logging
 REM docker stack deploy -c monitoring/docker-stack.yml ksys-monitoring
 REM docker stack deploy -c elk/docker-stack.yml ksys-elk
