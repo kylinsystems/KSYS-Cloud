@@ -22,7 +22,7 @@ Now, create a couple of VMs using our node management tool, docker-machine:
 docker-machine create -d hyperv --hyperv-virtual-switch "My Virtual Switch" mymanager1
 docker-machine --debug --native-ssh create -d hyperv --hyperv-virtual-switch "My Virtual Switch" myworker1
 ```
-## 1.2 Create a single Swarm in Docker Desktop (Windows 10)
+## 1.2 Create a single Swarm Node in Docker Desktop (Windows 10)
 ```
 docker swarm init
 ```
@@ -84,7 +84,7 @@ https://grafana.com/dashboards/455
 ### OpenLDAP 
 Using below ldapsearch script within openldap container to test LDAP user, replace [CONTAIENR ID] with real ID. 
 
-Or you may connect to contaienr console in Portainer, then ldapsearch in console directly.
+Or you may connect to openldap container console in Portainer, then ldapsearch in console directly.
 
 ```
 docker exec [CONTAINER ID] ldapsearch -x -H ldap://localhost -b dc=ldap,dc=example,dc=org -D "cn=admin,dc=ldap,dc=example,dc=org" -w admin
