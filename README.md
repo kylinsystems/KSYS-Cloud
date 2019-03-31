@@ -1,5 +1,5 @@
-# The KSYS-Cloud
-KSYS Cloud Infrastructure by Docker Swarm
+# The KSYS-Docker-Cloud
+KSYS Docker Cloud Infrastructure by Docker Swarm
 - Proxy : traefik
 - Management : portainer, swarmpit, registry
 - LDAP : openldap, phpldapadmin, ldapaccountmanager
@@ -7,6 +7,9 @@ KSYS Cloud Infrastructure by Docker Swarm
 - Monitoring : prometheus, grafana
 - ELK : Elasticsearch, logstash, Kibana
 
+# Swarm Docker Cluster
+Single Node : master and slave in one Docker Node (for testing)
+Multiple Node : Nultiple master and slave nodes (for production)
 
 ## 1.1 Create a Swarm Cluster (Windows 10/Hyper-V)
 https://docs.docker.com/get-started/part4/#create-a-cluster
