@@ -17,7 +17,7 @@ configs:
 
 services:
   openldap:
-    image: osixia/openldap:1.2.3
+    image: osixia/openldap:1.2.4
     environment:
       LDAP_LOG_LEVEL: "3"
       LDAP_ORGANISATION: "Example Inc."
